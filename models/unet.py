@@ -69,6 +69,7 @@ class UNet(nn.Module):
             nn.ReLU(inplace=True),
         )
         self.output = nn.Conv2d(64, out_channels, 1)
+        self.dropout = nn.Dropout(0.2)
 
     def center_crop(self, x, target_tensor):
         _, _, tH, tW = target_tensor.size()
@@ -91,4 +92,6 @@ class UNet(nn.Module):
         x8 = self.conv8(torch.cat((self.center_crop(x2, upconv3), upconv3), dim=1))
         upconv4 = self.upconv4(x8)
         x9 = self.conv9(torch.cat((self.center_crop(x1, upconv4), upconv4), dim=1))
-        return self.output(x9)
+        output = self.output(x9)
+        output = torch.sigmoid(output)
+        return output
