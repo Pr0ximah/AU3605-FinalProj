@@ -1,0 +1,82 @@
+import sys
+sys.path.append('./')
+import torch
+from torch.utils.data import Dataset
+import os
+import pandas as pd
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import utils.pre_process as pre_process
+
+class DISK_Dataset(Dataset):
+    def __init__(self, images_dir, target_csv_path, img_size=(256, 256)):
+        """
+        初始化数据集。
+        :param images_dir: 本地图片目录路径。
+        :param target_csv_path: 包含目标坐标的CSV文件路径。
+        :param img_size: 调整图片大小，默认为 (256, 256)。
+        """
+        print(" ** Loading dataset...")
+        self.data = []
+        self.target = []
+        self.img_size = img_size
+
+        # 读取目标坐标的 CSV 文件
+        targets_df = pd.read_csv(target_csv_path)
+        data_cleaned = targets_df.iloc[:, :3]  # 选择前三列
+        data_cleaned.columns = ['Identifier', 'X', 'Y']  # 重命名列
+
+        # 清理数据，去掉含有 NaN 的行
+        data_cleaned = data_cleaned.dropna(subset=['Identifier', 'X', 'Y'])
+
+        # 转换为字典
+        targets_dict = data_cleaned.set_index('Identifier').apply(lambda row: (row['X'], row['Y']), axis=1).to_dict()
+        # targets_dict = {row['filename']: (row['x_disk'], row['y_disk'], row['x_macula'], row['y_macula']) 
+        #                 for _, row in targets_df.iterrows()}
+
+        # 读取图片并关联坐标
+        # imgs = os.listdir(images_dir)
+        for img_filename in targets_dict.keys():
+            img_path = os.path.join(images_dir, img_filename)
+            img_path = img_path+'.jpg'
+            print(img_path)
+            if img_filename in targets_dict:
+                # 读取并调整图片
+                img = cv2.imread(img_path, cv2.IMREAD_COLOR)
+                img = cv2.resize(img, self.img_size)
+                img = pre_process.color_normalization(img)
+                img = torch.tensor(img, dtype=torch.float32)
+                img = img.permute(2, 0, 1)  # 转换为 (C, H, W)
+                self.data.append(img)
+
+                # 添加对应的目标坐标
+                target = torch.tensor(targets_dict[img_filename], dtype=torch.float32)
+                self.target.append(target)
+            else:
+                print(f"Warning: No target found for image {img_filename}")
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        return self.data[idx], self.target[idx]
+
+
+if __name__ == "__main__":
+    # 示例：本地目录和CSV文件路径
+    images_dir = r"dataset/DISK/shipanbiaozhu/ab/ab2"
+    target_csv_path = r"dataset/DISK/shipanbiaozhu/OD.csv"
+    
+    # 创建数据集实例
+    dataset = DISK_Dataset(images_dir, target_csv_path)
+    print(len(dataset.data))
+    img = dataset.data[2].permute(1, 2, 0).numpy().astype(np.uint8)
+    print(img.shape)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    plt.imshow(img)
+    plt.show()
+    # print(f"Dataset size: {len(dataset)}")
+    # print(f"Sample image shape: {dataset[0][0].shape}")
+    # print(f"Sample target: {dataset[0][1]}")
+    
