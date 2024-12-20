@@ -5,6 +5,21 @@ from utils.blood_vessel_split import BV_Split
 import matplotlib.pyplot as plt
 import cv2
 from utils.pre_process import color_normalization
+import argparse
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Test U-Net model.")
+    parser.add_argument(
+        "-m", "--model", type=str, default="", help="Model epoch used for test."
+    )
+    parser.add_argument(
+        "-t",
+        "--use_training_data",
+        action="store_true",
+        help="Setting to use training data.",
+    )
+    return parser.parse_args()
 
 
 def load_gif(path):
@@ -17,17 +32,21 @@ def load_gif(path):
 
 
 if __name__ == "__main__":
-    model_dir = "models/logs/oold/unet_model_700.pth"
-    # use_training_data = True
-    use_training_data = False
+    # args
+    test_args = parse_args()
+    model_dir = f"models/logs/unet_model_{test_args.model}.pth"
+    use_training_data = test_args.use_training_data
+
+    print(f" ** Using model: {model_dir}")
+    print(f" ** Using training data: {use_training_data}")
 
     if use_training_data:
         img_idx = 25
-        test_img_dir = f"dataset/DRIVE/training/images/{img_idx}_training.tif"
+        test_img_dir = f"dataset/DRIVE/training/DRIVE/images/{img_idx}.tif"
         test_img = cv2.imread(test_img_dir, cv2.IMREAD_COLOR)
         test_img = color_normalization(test_img)
         test_img = cv2.cvtColor(test_img, cv2.COLOR_BGR2RGB)
-        label_img_dir = f"dataset/DRIVE/training/1st_manual/{img_idx}_manual1.gif"
+        label_img_dir = f"dataset/DRIVE/training/DRIVE/targets/{img_idx}.gif"
         label_img = load_gif(label_img_dir)
         assert test_img is not None
         bv_split = BV_Split(model_dir)

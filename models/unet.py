@@ -69,7 +69,6 @@ class UNet(nn.Module):
             nn.ReLU(inplace=True),
         )
         self.output = nn.Conv2d(64, out_channels, 1)
-        self.dropout = nn.Dropout(0.2)
 
     def center_crop(self, x, target_tensor):
         _, _, tH, tW = target_tensor.size()
