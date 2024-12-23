@@ -11,7 +11,7 @@ import argparse
 def parse_args():
     parser = argparse.ArgumentParser(description="Test U-Net model.")
     parser.add_argument(
-        "-m", "--model", type=str, default="", help="Model epoch used for test."
+        "-m", "--model", type=str, default="final", help="Model epoch used for test."
     )
     parser.add_argument(
         "-t",
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     print(f" ** Using training data: {use_training_data}")
 
     if use_training_data:
-        img_idx = 25
+        img_idx = 21
         test_img_dir = f"dataset/DRIVE/training/DRIVE/images/{img_idx}.tif"
         test_img = cv2.imread(test_img_dir, cv2.IMREAD_COLOR)
         test_img = color_normalization(test_img)

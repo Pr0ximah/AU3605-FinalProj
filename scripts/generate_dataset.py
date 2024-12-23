@@ -42,10 +42,12 @@ if __name__ == "__main__":
     for k, v in imgs.items():
         training_data_dir = os.path.join(v, "images")
         label_data_dir = os.path.join(v, "targets")
+        if not os.path.exists(training_data_dir):
+            continue
         for img_path in os.listdir(training_data_dir):
             tarin_img_path = os.path.join(training_data_dir, img_path)
             img = cv2.imread(tarin_img_path, cv2.IMREAD_COLOR)
-            img = cv2.resize(img, (572, 572))
+            img = cv2.resize(img, (512, 512))
             img = color_normalization(img)
             img = torch.tensor(img, dtype=torch.float32)
             img = img.permute(2, 0, 1)
@@ -57,7 +59,7 @@ if __name__ == "__main__":
                 target = load_gif(target_img_path)
             else:
                 target = cv2.imread(target_img_path, cv2.IMREAD_GRAYSCALE)
-            target = cv2.resize(target, (388, 388))
+            target = cv2.resize(target, (512, 512))
             target = np.where(target >= 128, 1, 0)
             target = torch.tensor(target, dtype=torch.float32)
             target.unsqueeze_(0)

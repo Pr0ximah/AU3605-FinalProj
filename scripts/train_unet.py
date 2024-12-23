@@ -13,7 +13,7 @@ import argparse
 def parse_args():
     parser = argparse.ArgumentParser(description="Train U-Net model.")
     parser.add_argument("--lr", type=float, default=3e-4, help="Learning rate.")
-    parser.add_argument("--epochs", type=int, default=1000, help="Number of epochs.")
+    parser.add_argument("--epochs", type=int, default=50, help="Number of epochs.")
     parser.add_argument(
         "--train_data_ratio", type=float, default=0.8, help="Ratio of training data."
     )
@@ -30,7 +30,7 @@ def parse_args():
         default="",
         help="Pretrained model epoch to load.",
     )
-    parser.add_argument("--batch_size", type=int, default=5, help="Batch size.")
+    parser.add_argument("--batch_size", type=int, default=1, help="Batch size.")
     parser.add_argument("--seed", type=int, default=42, help="Random seed.")
     return parser.parse_args()
 
@@ -108,7 +108,7 @@ if __name__ == "__main__":
             f"\n ** Epoch {epoch + 1}, train loss: {train_loss}, test loss: {test_loss}"
         )
 
-        if (epoch + 1) % 4 == 0:
+        if (epoch + 1) % 10 == 0:
             model_path = f"models/logs/unet_model_{epoch + 1}.pth"
             torch.save(model.state_dict(), model_path)
             print(f" ** Model saved to {model_path}")
