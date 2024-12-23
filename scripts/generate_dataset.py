@@ -31,12 +31,10 @@ if __name__ == "__main__":
     imgs["DRIVE"] = "dataset/DRIVE/training/DRIVE"
     imgs["AdamHoover"] = "dataset/DRIVE/training/AdamHoover"
     imgs["HRF"] = "dataset/DRIVE/training/HRF"
-    imgs["Generate"] = "dataset/DRIVE/training/Generate"
     suffix_mapping = {
         "DRIVE": ".gif",
         "AdamHoover": ".ah.ppm",
         "HRF": ".tif",
-        "Generate": ".png",
     }
 
     for k, v in imgs.items():
