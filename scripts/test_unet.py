@@ -4,7 +4,7 @@ sys.path.append("./")
 from utils.blood_vessel_split import BV_Split
 import matplotlib.pyplot as plt
 import cv2
-from utils.pre_process import color_normalization
+from utils.center_detect import color_normalization
 import argparse
 
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         label_img = load_gif(label_img_dir)
         assert test_img is not None
         bv_split = BV_Split(model_dir)
-        output = bv_split.split(test_img_dir)
+        output = bv_split.split(test_img)
         plt.subplots(1, 3, figsize=(18, 8))
         plt.subplot(1, 3, 1)
         plt.imshow(test_img)

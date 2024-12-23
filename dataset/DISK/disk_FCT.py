@@ -7,7 +7,7 @@ import pandas as pd
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-import utils.pre_process as pre_process
+from utils.center_detect import color_normalization
 
 class DISK_Dataset(Dataset):
     def __init__(self, images_dir, target_csv_path, img_size=(256, 256)):
@@ -46,7 +46,7 @@ class DISK_Dataset(Dataset):
                 img = cv2.imread(img_path, cv2.IMREAD_COLOR)
                 img = cv2.resize(img, self.img_size)
                 img_show = img
-                img = pre_process.color_normalization(img)
+                img = color_normalization(img)
                 img = torch.tensor(img, dtype=torch.float32)
                 img = img.permute(2, 0, 1)  # 转换为 (C, H, W)
                 self.data.append(img)

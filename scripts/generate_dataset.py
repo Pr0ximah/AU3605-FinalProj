@@ -5,7 +5,7 @@ import os
 import torch
 import cv2
 import numpy as np
-from utils.pre_process import color_normalization
+from utils.center_detect import color_normalization
 
 
 def load_gif(path):
@@ -63,7 +63,7 @@ if __name__ == "__main__":
             target.unsqueeze_(0)
             targets.append(target)
             print(f"{tarin_img_path} loaded.")
-        
+
     print(f" ** Total {len(datas)} samples.")
     torch.save(datas, "dataset/DRIVE/training/datas.pt")
     torch.save(targets, "dataset/DRIVE/training/targets.pt")

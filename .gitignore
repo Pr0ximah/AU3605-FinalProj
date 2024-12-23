@@ -3,3 +3,5 @@ logs/
 dataset/DRIVE/training/*.pt
 dataset/DRIVE/training/Generate
 *.zip
+input/
+output/
