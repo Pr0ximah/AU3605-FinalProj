@@ -45,14 +45,19 @@ class DISK_Dataset(Dataset):
                 # 读取并调整图片
                 img = cv2.imread(img_path, cv2.IMREAD_COLOR)
                 img = cv2.resize(img, self.img_size)
+                img_show = img
                 img = pre_process.color_normalization(img)
                 img = torch.tensor(img, dtype=torch.float32)
                 img = img.permute(2, 0, 1)  # 转换为 (C, H, W)
                 self.data.append(img)
 
                 # 添加对应的目标坐标
-                target = torch.tensor(targets_dict[img_filename], dtype=torch.float32)
-                self.target.append(target)
+                target_temp = torch.tensor((targets_dict[img_filename][0]*256/4288,targets_dict[img_filename][1]*256/2848), dtype=torch.float32)
+                self.target.append(target_temp)
+
+                # plt.imshow(img_show)
+                # plt.scatter(target_temp[0].item(), target_temp[1].item(), c='r')
+                # plt.show()
             else:
                 print(f"Warning: No target found for image {img_filename}")
 

@@ -14,23 +14,23 @@ if __name__ == '__main__':
     num_epochs = 300
     model = DiskMaculaNet()
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.0000005)
+    optimizer = optim.Adam(model.parameters(), lr=0.000001)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f" ** Using device: {device}")
     images_dir = r"dataset/DISK/shipanbiaozhu/ab/ab2"
-    target_csv_path = r"dataset/DISK/shipanbiaozhu/FCT.csv"
+    target_csv_path = r"dataset/DISK/shipanbiaozhu/OD.csv"
     dataset = DISK_Dataset(images_dir, target_csv_path)
 
     train_dataset, val_dataset = torch.utils.data.random_split(dataset, [int(0.8*len(dataset)), len(dataset)-int(0.8*len(dataset))])
-    train_loader = DataLoader(train_dataset, batch_size=5, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=5, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=8, shuffle=False)
 
     model.to(device)
     print(" ** Start training...")
     # Training loop
     load_pretrained = True
     if load_pretrained:
-        pretrained_model_dir = "models/logs/model_FCT_seed_1.pth"
+        pretrained_model_dir = "models/logs/model_OD_seed_1.pth"
         model.load_state_dict(torch.load(pretrained_model_dir, weights_only=False))
     
     for epoch in trange(num_epochs):
@@ -60,8 +60,7 @@ if __name__ == '__main__':
 
         # Save model
         if (epoch+1) % 10 == 0:
-            torch.save(model.state_dict(), f'models/logs/model_FCT_{epoch}.pth')
+            torch.save(model.state_dict(), f'models/logs/model_OD_{epoch}.pth')
 
-    torch.save(model.state_dict(), 'models/logs/model_FCT_new.pth')
+    torch.save(model.state_dict(), 'models/logs/model_OD_new.pth')
 
- 
