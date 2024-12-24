@@ -3,7 +3,7 @@ import cv2
 from utils.center_detect import color_normalization
 from utils.blood_vessel_split import BV_Split
 from utils.center_detect import CenterDetector
-from utils.pre_process import Normalizer
+from utils.pre_process import Normalizer, fill
 
 
 def main():
@@ -22,6 +22,7 @@ def main():
     for img_filename in os.listdir(input_img_dir):
         img_path = os.path.join(input_img_dir, img_filename)
         img = cv2.imread(img_path, cv2.IMREAD_COLOR)
+        img = fill(img)
         print(f" ** Processing image: {img_path}")
 
         # Color normalization
