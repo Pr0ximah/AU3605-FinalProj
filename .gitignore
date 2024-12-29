@@ -5,3 +5,4 @@ dataset/DRIVE/training/Generate
 *.zip
 input/
 output/
+.DS_Store

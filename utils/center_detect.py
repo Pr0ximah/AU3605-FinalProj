@@ -30,12 +30,13 @@ def color_normalization(test_image):
 class CenterDetector:
     def __init__(self):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        # self.device = torch.device("mps")
         self.model_OD = DiskMaculaNet()
-        self.model_OD.load_state_dict(torch.load("models/logs/model_OD_final.pth", weights_only=False))
+        self.model_OD.load_state_dict(torch.load("models/logs/model_OD_final.pth", weights_only=False, map_location=self.device))
         self.model_OD.to(self.device)  # 将模型移动到设备
         self.model_OD.eval()
         self.model_FCT = DiskMaculaNet()
-        self.model_FCT.load_state_dict(torch.load("models/logs/model_FCT_final.pth", weights_only=False))
+        self.model_FCT.load_state_dict(torch.load("models/logs/model_FCT_final.pth", weights_only=False, map_location=self.device))
         self.model_FCT.to(self.device)  # 将模型移动到设备
         self.model_FCT.eval()
 

@@ -21,7 +21,6 @@ class ConvBlock(nn.Module):
 
 
 class UNet(nn.Module):
-    # input size: 572x572
     def __init__(self, in_channels, out_channels=1):
         super(UNet, self).__init__()
         # 512x512
