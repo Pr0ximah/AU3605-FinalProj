@@ -25,7 +25,5 @@ class BV_Split:
         output = output.squeeze(0).squeeze(0).numpy()
         output *= 255
         output = np.array(output).astype(np.uint8)
-        # output = cv2.dilate(output, np.ones((9, 9), np.uint8), iterations=1)
-        # output = cv2.morphologyEx(output, cv2.MORPH_CLOSE, np.ones((7, 7), np.uint8))
 
         return output

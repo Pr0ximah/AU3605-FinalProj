@@ -8,6 +8,7 @@ from dataset.DRIVE.DRIVE import DRIVE_Dataset
 from torch.optim.adam import Adam
 from tqdm import trange
 import argparse
+import os
 
 
 def parse_args():
@@ -63,13 +64,14 @@ if __name__ == "__main__":
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
-    # dataloader = DataLoader(dataset, batch_size=5, shuffle=True)
-
     model = UNet(3)
     optimizer = Adam(model.parameters(), lr=lr)
     loss = torch.nn.BCELoss()
     model = model.to(device)
     init_epoch = 0
+
+    if not os.path.exists("models/logs"):
+        os.makedirs("models/logs")
 
     if load_pretrained:
         model.load_state_dict(torch.load(pretrained_model_dir, weights_only=False))
