@@ -78,3 +78,13 @@ pip install -r requirements.txt
 
 - 颜色归一化参考图像路径为 `utils/ref_img.jpg`，可根据需要修改
 - `dataset` 中 `DISK` 为OD/FCT标注，`DRIVE` 为血管分割标注
+
+## 小组成员
+
+[@Pr0ximah](https://github.com/Pr0ximah)
+
+[@520AWEI](https://github.com/520AWEI)
+
+[@sjtu2210](https://github.com/sjtu2210)
+
+[@Charles Zhai](https://github.com/zzc2022)
