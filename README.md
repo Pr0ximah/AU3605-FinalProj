@@ -17,33 +17,45 @@
 
 ### 安装依赖
 
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 ### 模型训练
 
 1. 生成数据集打包文件
 
-    `python scripts/generate_dataset.py`
+    ```
+    python scripts/generate_dataset.py
+    ```
 
 2. 训练中心检测模型
 
-    `python train_FCT.py`
+    ```
+    python train_FCT.py
+    ```
     
-    `python train_OD.py`
+    ```
+    python train_OD.py
+    ```
 
 3. 训练血管分割模型
 
-    `python train_unet.py`
+    ```
+    python train_unet.py
+    ```
 
 ### 图像预处理
 
-1. 准备图像
+1. 将要输入图像放置于 `input/` 下
 
-    将要处理的图像放置于 `input/` 下
+2. 处理
 
-2. 开始处理
-
-    运行 `python main.py`，在 `output/` 路径下获得处理结果
+    ```
+    python main.py
+    ```
+    
+3. 在 `output/` 路径下获得处理结果
     
 
 ### PCA（主成分分析）
@@ -52,11 +64,15 @@
 
 1. 使用正常图像进行主分量提取
 
-    `python PCA/pca_learning.py`
+    ```
+    python PCA/pca_learning.py
+    ```
 
 2. 使用潜在病灶图像进行重构和病灶检测
 
-    `python PCA/pca_detect.py -p <待检测图像路径>`
+    ```
+    python PCA/pca_detect.py -p <待检测图像路径>
+    ```
 
 ## 备注
 
